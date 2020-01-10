@@ -5,12 +5,14 @@ const app = express();
 const bodyParser = require("body-parser");
 const genres = require("./routes/genres");
 const customers = require("./routes/customers");
+const movies = require("./routes/movies");
 
 // support parsing of application/json type post data
 app.use(bodyParser.json());
 // app.use(morgan('tiny'));
 app.use("/api/genres", genres);
 app.use("/api/customers", customers);
+app.use("/api/movies", movies);
 
 mongoose.connect('mongodb://localhost/vidflix', {
         useNewUrlParser: true,
