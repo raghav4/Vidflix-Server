@@ -45,5 +45,23 @@ const rentalSchema = new mongoose.Schema({
     },
     dateReturned: {
         type: Date
+    },
+    rentalFee: {
+        type: Number,
+        min: 0
     }
-})
+});
+
+const Rental = mongoose.model('Rental', rentalSchema);
+
+function validateRental(rental) {
+    const schema = Joi.object({
+        customerId: Joi.string().required(),
+        movieId: Joi.string().required()
+    });
+
+    return schema.validate(rental);
+}
+
+exports.validate = validateRental;
+exports.Rental = Rental;
