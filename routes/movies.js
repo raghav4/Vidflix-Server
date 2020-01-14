@@ -3,6 +3,7 @@ const { Genre } = require('../models/genre');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
     const movies = await Movie.find().sort('name');
@@ -18,7 +19,7 @@ router.get('/:id', async (req, res) => {
     return res.send(movie);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     /**
      * TODO: Handle Duplicacy, status code : 409
      */
@@ -28,7 +29,7 @@ router.post('/', async (req, res) => {
     const genre = await Genre.findById(req.body.genreId);
     if (!genre) return res.status(400).send(`Genre with given id ${req.params.genreId} does not exist in db...`);
 
-    let movie = new Movie({
+    const movie = new Movie({
         title: req.body.title,
         genre: {
             _id: genre._id,
@@ -38,11 +39,12 @@ router.post('/', async (req, res) => {
         dailyRentalRate: req.body.dailyRentalRate
     });
 
-    movie = await movie.save();
+    // movie = await movie.save(); // There is no need of resetting it because it is being done even before saving.
+    await movie.save();
     return res.send(movie);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -64,7 +66,7 @@ router.put('/:id', async (req, res) => {
     return res.send(movie);
 });
 
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', auth, async(req, res) => {
     const movie = await Movie.findByIdAndDelete(req.params.id);
     if(!movie) return res.status(400).send('Movie not found');
 
