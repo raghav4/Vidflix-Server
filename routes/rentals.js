@@ -1,3 +1,4 @@
+const asyncMiddleware = require('../middleware/async');
 const { Rental, validate } = require('../models/rental');
 const { Movie } = require('../models/movie');
 const { Customer } = require('../models/customer');
@@ -65,7 +66,7 @@ router.post('/', auth, async (req, res) => {
             })
             .run();
     } catch (ex) {
-        return res.status(500).send('Something went wrong..');
+        return res.status(500).send('Something went wrong during transaction...');
     } 
 
     res.send(rental);

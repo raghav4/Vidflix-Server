@@ -1,3 +1,4 @@
+const asyncMiddleware = require('../middleware/async');
 const { Movie, validate } = require('../models/movie');
 const { Genre } = require('../models/genre');
 const mongoose = require('mongoose');

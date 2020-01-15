@@ -1,11 +1,12 @@
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
-const {Genre, validate} = require('../models/genre');
+const { Genre, validate } = require('../models/genre');
 const mongoose = require('mongoose');
 const express = require("express");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
+  throw new Error('Something went wrong..'); 
   const genres = await Genre.find().sort('name');
   if (!genres.length) return res.status(404).send('There are no genres in the DB!');
   res.send(genres);
@@ -15,7 +16,6 @@ router.get("/:id", async (req, res) => {
   const genre = await Genre.findById({
     _id: req.params.id
   });
-
   if (!genre) return res.status(404).send(`Genre with given id ${req.params.id} is not found!`);
 
   res.send(genre);
@@ -26,7 +26,6 @@ router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  // If already exists 
   let genre = await Genre.findOne({
     name: req.body.name
   });

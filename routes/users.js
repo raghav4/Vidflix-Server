@@ -1,3 +1,4 @@
+const asyncMiddleware = require('../middleware/async');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const _ = require('lodash');

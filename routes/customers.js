@@ -1,3 +1,4 @@
+const asyncMiddleware = require('../middleware/async');
 const {Customer, validate} = require('../models/customer');
 const mongoose = require('mongoose');
 const express = require('express');
@@ -37,7 +38,7 @@ router.put('/:id', async (req, res) => {
     const customer = await Customer.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         phone: req.body.phone,
-        isGold: req.body.isGold // what is isgold is not present?
+        isGold: req.body.isGold // what if isGold is not present?
     }, {
         new: true
     });
